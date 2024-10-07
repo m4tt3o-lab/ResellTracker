@@ -2,6 +2,7 @@ import express from "express";
 import cors from 'cors';
 import sequelize from './db.js';
 
+
 // Sincronizza il database con i modelli
 sequelize.sync({ alter: true })
   .then(() => {
@@ -14,6 +15,7 @@ sequelize.sync({ alter: true })
 const app = express();
 app.use(cors());
 app.use(express.json()); 
+
 
 const PORT = 3000;
 
