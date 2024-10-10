@@ -2,6 +2,10 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../db.js';
 
 const Sneaker = sequelize.define('Sneaker', {
+    imageUrl: {
+        type: DataTypes.STRING, 
+        allowNull: true,
+      },
     modello: {
         type: DataTypes.STRING,
         allowNull: false
