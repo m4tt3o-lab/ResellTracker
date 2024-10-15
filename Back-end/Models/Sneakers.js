@@ -31,12 +31,6 @@ const Sneaker = sequelize.define('Sneaker', {
     timestamps: false,
 });
 
-// Profitto/perdita
-Sneaker.prototype.getProfittoPerdita = function() {
-    if (this.prezzoVendita !== null) {
-        return this.prezzoVendita - this.prezzoAcquisto;
-    }
-    return null; // Se non è stata ancora venduta, non c'è profitto/perdita
-};
+
 
 export default Sneaker;

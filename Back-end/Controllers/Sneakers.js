@@ -34,7 +34,6 @@ export const getSneakerById = async (req, res) => {
 
 //------------------------------------------------------------------
 
-// Funzione per trovare l'immagine nella cartella 'images'
 const findImage = (modelName) => {
   const imagesDirectory = path.join(__dirname, '../images'); // Modifica il percorso se necessario
   const files = fs.readdirSync(imagesDirectory); // Leggi i file nella cartella
