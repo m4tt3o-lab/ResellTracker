@@ -1,0 +1,84 @@
+/* App.css */
+body {
+    background-color: #2e1a47; /* Viola scuro meno acceso */
+}
+
+.table {
+    border-collapse: separate; /* Usa un layout separato */
+    border-spacing: 0 15px; /* Spaziatura verticale tra le righe */
+}
+
+.table th, .table td {
+    padding: 20px;
+    background-color: #6a1b76; /* Porpora meno acceso */
+    border: none; /* Rimuovi tutti i bordi */
+    color: white;
+}
+
+/* Intestazione della tabella */
+.table-dark {
+    background-color: #5a155e; /* Porpora scuro per l'intestazione */
+    color: white; /* Testo bianco */
+    border-radius: 10px 10px 0 0; /* Angoli arrotondati in alto */
+}
+
+/* Stile delle righe della tabella */
+.table-row {
+    transition: transform 0.3s; /* Transizione per il cambio di dimensioni */
+    border: none;
+}
+
+/* Effetto hover sulle righe */
+.table-row:hover {
+    background-color: rgba(122, 76, 125, 0.4); /* Sfondo al passaggio del mouse in una tonalità porpora più chiara */
+    border-left: none;
+}
+
+/* Pulsanti */
+.btn {
+    transition: background-color 0.3s, transform 0.3s; /* Transizione per i pulsanti */
+}
+
+.btn-success {
+    background-color: #3cb371; /* Verde pastello */
+    border: none; /* Rimuovi il bordo */
+    border-radius: 20px; /* Bordo arrotondato */
+}
+
+.btn-danger {
+    background-color: #e57373; /* Rosso meno saturo */
+    border: none; /* Rimuovi il bordo */
+    border-radius: 20px; /* Bordo arrotondato */
+}
+
+.btn:hover {
+    transform: scale(1.05); /* Ingrandimento al passaggio del mouse */
+}
+
+.btn-success:hover {
+    background-color: #2e8b57; /* Verde scuro al passaggio del mouse */
+}
+
+.btn-danger:hover {
+    background-color: #d32f2f; /* Rosso scuro al passaggio del mouse */
+}
+
+/* Immagini */
+.img-fluid {
+    border-radius: 10px; /* Angoli arrotondati per le immagini */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra per le immagini */
+}
+
+tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Bordo sottile e meno invasivo */
+}
+
+.caricaSneakers{
+    background-color: #3cb371; /* Verde pastello */
+    border: none; /* Rimuovi il bordo */
+    color: white;
+}
+
+.caricaSneakers:hover {
+    background-color: #2e8b57; 
+}
