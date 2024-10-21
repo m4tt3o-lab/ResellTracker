@@ -47,16 +47,20 @@ const findImage = (modelName) => {
 export const postSneaker = async (req, res) => {
   const { modello, dataAcquisto, prezzoAcquisto, dataVendita, prezzoVendita } = req.body;
   
+  if (prezzoVendita && !dataVendita) {
+    return res.status(400).json({ error: 'Non puoi inserire un prezzo di vendita senza una data di vendita.' });
+  }
   const imageUrl = findImage(modello);
 
+  
   try {
     const newSneaker = await Sneaker.create({ 
       imageUrl, 
       modello,
       dataAcquisto,
       prezzoAcquisto,
-      dataVendita: dataVendita || '' ,
-      prezzoVendita: prezzoVendita || '' 
+      dataVendita: dataVendita || null ,
+      prezzoVendita: prezzoVendita || null
     });
 
     res.status(201).json(newSneaker);
@@ -80,7 +84,7 @@ export const updateSneaker = async (req, res) => {
     sneaker.modello = modello;
     sneaker.dataAcquisto = dataAcquisto;
     sneaker.prezzoAcquisto = prezzoAcquisto;
-    sneaker.dataVendita = dataVendita;
+    sneaker.dataVendita = dataVendita ;
     sneaker.prezzoVendita = prezzoVendita;
     
     await sneaker.save(); 

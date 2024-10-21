@@ -1,0 +1,88 @@
+/*nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    height: 50px;
+    justify-content: center;
+}
+
+a {
+    position: relative;
+    cursor: pointer;
+    color: #efefee;
+    font-size: 28px;
+    padding: 0.5rem 1rem;
+    transition: color 0.25s;
+}
+
+a::after {
+    position: absolute;
+    content: "";
+    inset: 0;
+    background: white;
+    scale: 1 0;
+    z-index: -1;
+    transition: 0.45s;
+    border-radius: 10px;
+}
+
+a:hover{
+    color: black;
+}
+
+a:hover::after{
+    scale: 1 1;
+}
+
+*/
+
+.sidebar {
+    height: 100%;
+    width: 60px; /* Larghezza ridotta per sidebar laterale */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(122, 76, 125, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    
+  }
+  
+  /* Stile per i pulsanti */
+  .nav-button {
+    background: none; /* Rimuove lo sfondo */
+    border: none; /* Rimuove il bordo */
+    color: #efefee; /* Colore delle icone */
+    font-size: 30px; /* Dimensione delle icone */
+    padding: 20px;
+    text-align: center;
+    transition: color 0.25s, background 0.25s; /* Aggiunto effetto di transizione per il background */
+    cursor: pointer; /* Cambia il cursore al passaggio del mouse */
+    position: relative; /* Necessario per il posizionamento dell'effetto hover */
+  }
+  
+  /* Stile al passaggio del mouse */
+  .nav-button:hover {
+    color: black; /* Cambia il colore dell'icona al passaggio del mouse */
+  }
+  
+  /* Effetto hover */
+  .nav-button::after {
+    position: absolute;
+    content: "";
+    inset: 0;
+    background: white;
+    scale: 1 0;
+    z-index: -1;
+    transition: 0.45s;
+    border-radius: 10px;
+  }
+  
+  /* Aggiungi l'effetto hover */
+  .nav-button:hover::after {
+    scale: 1 1;
+  }
+  
