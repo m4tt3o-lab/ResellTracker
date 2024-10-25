@@ -1,4 +1,4 @@
-import 'bootstrap-icons/font/bootstrap-icons.css'; // Assicurati che le icone siano importate
+import 'bootstrap-icons/font/bootstrap-icons.css'; 
 import '../Navbar.css';
 
 

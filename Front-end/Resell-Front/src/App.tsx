@@ -8,5 +8,4 @@ function App() {
     <Sneakers/>
   )
 }
-
 export default App

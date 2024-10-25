@@ -3,9 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../App.css';
 import Sidebar from "./Sidebar.tsx";
+import SneakersModal from "../ModalSneakers/CreatEditModal.tsx";
 
 interface Sneaker {
-    id: number;
+    id?: number;
     imageUrl: string;
     modello: string;
     dataAcquisto: Date;
@@ -16,7 +17,9 @@ interface Sneaker {
 
 function Sneakers() {
     const [sneakers, setSneakers] = useState<Sneaker[]>([])
-
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedSneaker, setSelectedSneaker] = useState<Sneaker | null>(null);
 
     useEffect(() => {
         getSneakers();
@@ -27,11 +30,10 @@ function Sneakers() {
             const url = 'http://localhost:3000/sneakers';
             const response = await fetch(url);
             const data = await response.json();
-            // Converti le date da stringhe a oggetti Date
-            const sneakersWithDates = data.map((sneaker: Sneaker) => ({
+            const sneakersWithDates = data.map((sneaker: Sneaker) => ({ 
                 ...sneaker,
-                dataAcquisto:  new Date(sneaker.dataAcquisto), // Converti in Date
-                dataVendita: sneaker.dataVendita? new Date(sneaker.dataVendita): null// Converti in Date
+                dataAcquisto:  new Date(sneaker.dataAcquisto), 
+                dataVendita: sneaker.dataVendita? new Date(sneaker.dataVendita): null
             }));
             setSneakers(sneakersWithDates);
         } catch (error) {
@@ -41,10 +43,10 @@ function Sneakers() {
 
     const earned = (sneakers: Sneaker[]): number => {
       return sneakers
-        .filter(sneaker => sneaker.prezzoVendita !== null) // Considera solo le sneakers vendute
+        .filter(sneaker => sneaker.prezzoVendita !== null) 
         .reduce((total, sneaker) => {
-          return total + (sneaker.prezzoVendita! - sneaker.prezzoAcquisto); // Calcola il guadagno
-        }, 0); // Il valore iniziale del guadagno è 0
+          return total + (sneaker.prezzoVendita! - sneaker.prezzoAcquisto); 
+        }, 0); 
     };
 
     const unSold = (sneakers: Sneaker[]): number => {
@@ -54,10 +56,55 @@ function Sneakers() {
           return total + sneaker.prezzoAcquisto;
         }, 0);
     };
+
+    const sold = (sneakers: Sneaker[]): number => {
+      return sneakers
+      .filter((sneaker) => sneaker.dataVendita!== null)
+        .reduce((total) => {
+          return total +=1;
+        }, 0);
+    }
+
+    const removeSneaker = async (id:number) => {
+      const url = `http://localhost:3000/sneakers/${id}`;
+  
+      try {
+        const response = await fetch(url, {
+          method: 'DELETE',
+        });
+  
+        if (response.ok) {
+          setSneakers((prevSneakers) => prevSneakers.filter((sneaker:Sneaker) => sneaker.id !== id));
+        } 
+      } catch (error) {
+        console.error('Errore durante la richiesta di cancellazione del utente:', error);
+      }
+    };
+
+    const handleSaveSneaker = () => {
+      setShowAddModal(false);
+      getSneakers(); 
+    };
+  
+    const handleSaveEdit = () => {
+      setShowEditModal(false);
+      getSneakers(); 
+    };
+  
+    const handleOpenAddModal = () => setShowAddModal(true);
+    const handleCloseAddModal = () => setShowAddModal(false);
+  
+    const handleOpenEditModal = (sneaker: Sneaker) => {
+      setSelectedSneaker(sneaker); 
+      setShowEditModal(true);
+  };
+  
+    const handleCloseEditModal = () => setShowEditModal(false);
+    
   
     return  (
-      <div className="d-flex" >
-        <Sidebar /> {/* Aggiungi la sidebar qui */}
+      <div className="d-flex " >
+        <Sidebar /> 
         <div style={{ color: "white", padding: "20px", marginLeft: "70px", flexGrow: '1' }}> 
         <div className="d-flex justify-content-between align-items-center mb-4">
           <div className="d-flex">
@@ -69,13 +116,11 @@ function Sneakers() {
                 <b>Aggiungi i tuoi prodotti e tieni traccia del tuo business!</b>
               </p>
             </div>
-  
             {/* Bottoni di azione */}
             <div style={{ marginLeft: '130px' }}>
-              <button className="btn caricaSneakers">
+              <button className="btn caricaSneakers" onClick={handleOpenAddModal}>
                 Carica Sneaker <i className="bi bi-plus-circle"></i>
               </button>
-  
               {/* Barra di ricerca */}
               <div className="w-40 mt-4">
                 <div className="input-group">
@@ -91,7 +136,6 @@ function Sneakers() {
                 </div>
               </div>
             </div>
-  
             <div style={{ marginLeft: '130px' }} className="mt-5">
             <span style={{ fontSize: '23px' }}>
                <b>Totale guadagnato:</b> 
@@ -106,16 +150,14 @@ function Sneakers() {
             {`€ ${unSold(sneakers)}`}
           </span>
         </span>
+        <span style={{ marginLeft: '130px', fontSize: '23px' }}> <b>Sneakers vendute:</b><span className="badge bg-secondary" style={{ marginLeft: '5px', padding: '10px' }}>
+            {`(${sold(sneakers)})`}
+          </span></span>
             </div>
           </div>
-  {/*
-          <div>
-            <button className="btn btn-secondary">Esporta Liste</button>
-          </div>*/}
         </div>
 
-
-  {/* Tabella delle sneakers */}
+  {/* Tabella */}
   <table className="table table-hover table-responsive">
     <thead className="table-dark">
       <tr>
@@ -147,11 +189,11 @@ function Sneakers() {
           
           <td className="text-center">
             <div className="d-flex justify-content-center">
-              <button className="btn btn-success me-2">
+              <button className="btn btn-success me-2" onClick={() => handleOpenEditModal(sneaker)}>
                 <i className="bi bi-pencil-square"></i>
               </button>
-              <button className="btn btn-danger">
-                <i className="bi bi-trash"></i>
+              <button className="btn btn-danger" onClick={() => removeSneaker(sneaker.id!)}>
+                  <i className="bi bi-trash"></i>
               </button>
             </div>
           </td>
@@ -159,6 +201,13 @@ function Sneakers() {
       ))}
     </tbody>
   </table>
+  <SneakersModal
+        showModal={showAddModal || showEditModal}
+        onClose={showEditModal ? handleCloseEditModal : handleCloseAddModal}
+        onSave={showEditModal ? handleSaveEdit : handleSaveSneaker}
+        actionType={showEditModal ? 'edit' : 'add'}
+        sneakers={selectedSneaker}
+      />
   </div>
 </div>
     );

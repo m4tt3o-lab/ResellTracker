@@ -4,7 +4,7 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// ottenere __dirname in un modulo ES
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -35,13 +35,12 @@ export const getSneakerById = async (req, res) => {
 //------------------------------------------------------------------
 
 const findImage = (modelName) => {
-  const imagesDirectory = path.join(__dirname, '../images'); // Modifica il percorso se necessario
-  const files = fs.readdirSync(imagesDirectory); // Leggi i file nella cartella
+  const imagesDirectory = path.join(__dirname, '../images'); 
+  const files = fs.readdirSync(imagesDirectory); 
 
-  // Trova il file il cui nome contiene il nome del modello
   const foundImage = files.find(file => file.toLowerCase().includes(modelName.toLowerCase()));
 
-  return foundImage ? `images/${foundImage}` : ''; // Restituisce il percorso dell'immagine o una stringa vuota se non trovata
+  return foundImage ? `images/${foundImage}` : ''; 
 };
 
 export const postSneaker = async (req, res) => {
@@ -113,3 +112,5 @@ export const deleteSneaker = async (req, res) => {
     res.status(500).json({ error: 'Errore nella cancellazione della sneaker' });
   }
 };
+
+
