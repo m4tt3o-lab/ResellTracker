@@ -4,9 +4,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../App.css';
 import Sidebar from "./Sidebar.tsx";
 import SneakersModal from "../ModalSneakers/CreatEditModal.tsx";
+import ConfirmDeleteSneakerModal from "../ModalSneakers/SneakerDeleteModal.tsx";
 
 interface Sneaker {
-    id?: number;
+    id: number;
     imageUrl: string;
     modello: string;
     dataAcquisto: Date;
@@ -19,6 +20,8 @@ function Sneakers() {
     const [sneakers, setSneakers] = useState<Sneaker[]>([])
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [SneakerToDelete, setSneakerToDelete] = useState<Sneaker | null>(null);
     const [selectedSneaker, setSelectedSneaker] = useState<Sneaker | null>(null);
 
     useEffect(() => {
@@ -98,119 +101,160 @@ function Sneakers() {
       setSelectedSneaker(sneaker); 
       setShowEditModal(true);
   };
-  
     const handleCloseEditModal = () => setShowEditModal(false);
     
+    const handleOpenDeleteModal = (sneaker:Sneaker) => {
+      setSneakerToDelete(sneaker);
+      setShowDeleteModal(true);
+    };
   
-    return  (
-      <div className="d-flex " >
-        <Sidebar /> 
-        <div style={{ color: "white", padding: "20px", marginLeft: "70px", flexGrow: '1' }}> 
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <div className="d-flex">
-            <div>
-              <h1>Sneakers manager</h1>
-              <p className="mb-0">
-                <b>Gestisci il tuo inventario di sneakers.</b>
-                <br />
-                <b>Aggiungi i tuoi prodotti e tieni traccia del tuo business!</b>
-              </p>
-            </div>
-            {/* Bottoni di azione */}
-            <div style={{ marginLeft: '130px' }}>
-              <button className="btn caricaSneakers" onClick={handleOpenAddModal}>
-                Carica Sneaker <i className="bi bi-plus-circle"></i>
-              </button>
-              {/* Barra di ricerca */}
-              <div className="w-40 mt-4">
-                <div className="input-group">
-                  <span className="input-group-text" id="basic-addon1">
-                    <i className="bi bi-search"></i>
+    const handleCloseDeleteModal = () => {
+      setShowDeleteModal(false);
+      setSneakerToDelete(null);
+    };
+  
+  
+    return (
+      <div className="d-flex">
+        <Sidebar />
+        <div style={{ color: "white", padding: "20px", marginLeft: "70px", flexGrow: '1' }}>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex">
+              <div>
+                <h1>Sneakers manager</h1>
+                <p className="mb-0">
+                  <b>Gestisci il tuo inventario di sneakers.</b>
+                  <br />
+                  <b>Aggiungi i tuoi prodotti e tieni traccia del tuo business!</b>
+                </p>
+              </div>
+              
+              {/* Bottoni di azione */}
+              <div style={{ marginLeft: '130px' }}>
+                <button className="btn caricaSneakers" onClick={handleOpenAddModal}>
+                  Carica Sneaker <i className="bi bi-plus-circle"></i>
+                </button>
+    
+                {/* Barra di ricerca */}
+                <div className="w-40 mt-4">
+                  <div className="input-group">
+                    <span className="input-group-text" id="basic-addon1">
+                      <i className="bi bi-search"></i>
+                    </span>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Cerca per parola chiave..."
+                      onChange={(e) => console.log(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+    
+              {/* Totali */}
+              <div style={{ marginLeft: '130px' }} className="mt-5 d-flex">
+                <div className="me-4" style={{ fontSize: '23px' }}>
+                  <b>Totale guadagnato:</b>
+                  <span
+                    className={`badge ${earned(sneakers) > 0 ? 'bg-success' : 'bg-danger'}`}
+                    style={{ marginLeft: '5px', padding: '10px' }}
+                  >
+                    {`€ ${earned(sneakers)}`}
                   </span>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Cerca per parola chiave..."
-                    onChange={(e) => console.log(e.target.value)}
-                  />
+                </div>
+    
+                <div className="me-4" style={{ fontSize: '23px' }}>
+                  <b>Totale non venduto:</b>
+                  <span
+                    className="badge bg-secondary"
+                    style={{ marginLeft: '5px', padding: '10px' }}
+                  >
+                    {`€ ${unSold(sneakers)}`}
+                  </span>
+                </div>
+    
+                <div style={{ fontSize: '23px' }}>
+                  <b>Sneakers vendute:</b>
+                  <span
+                    className="badge bg-secondary"
+                    style={{ marginLeft: '5px', padding: '10px' }}
+                  >
+                    {`(${sold(sneakers)})`}
+                  </span>
                 </div>
               </div>
             </div>
-            <div style={{ marginLeft: '130px' }} className="mt-5">
-            <span style={{ fontSize: '23px' }}>
-               <b>Totale guadagnato:</b> 
-          <span className={`badge ${earned(sneakers) > 0 ? 'bg-success' : 'bg-danger' }`} style={{ marginLeft: '5px', padding: '10px' }}>
-            {`€ ${earned(sneakers)}`}
-          </span>
-        </span>
-
-        <span style={{ marginLeft: '130px', fontSize: '23px' }}>
-          <b>Totale non venduto:</b>
-          <span className="badge bg-secondary" style={{ marginLeft: '5px', padding: '10px' }}>
-            {`€ ${unSold(sneakers)}`}
-          </span>
-        </span>
-        <span style={{ marginLeft: '130px', fontSize: '23px' }}> <b>Sneakers vendute:</b><span className="badge bg-secondary" style={{ marginLeft: '5px', padding: '10px' }}>
-            {`(${sold(sneakers)})`}
-          </span></span>
-            </div>
           </div>
+    
+          {/* Tabella */}
+          <table className="table table-hover table-responsive">
+            <thead className="table-dark">
+              <tr>
+                <th>Immagine</th>
+                <th>Modello</th>
+                <th>Data Acquisto</th>
+                <th>Prezzo Acquisto</th>
+                <th>Data Vendita</th>
+                <th>Prezzo Vendita</th>
+                <th className="text-center">Azioni</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sneakers.map((sneaker) => (
+                <tr key={sneaker.id}>
+                  <td>
+                    <img
+                      src={`http://localhost:3000/${sneaker.imageUrl}`}
+                      alt={sneaker.modello}
+                      className="img-fluid"
+                      style={{ maxWidth: "65px", maxHeight: "50px" }}
+                    />
+                  </td>
+                  <td>{sneaker.modello}</td>
+                  <td>{new Date(sneaker.dataAcquisto).toLocaleDateString()}</td>
+                  <td>{`€ ${sneaker.prezzoAcquisto}`}</td>
+                  <td>{sneaker.dataVendita ? new Date(sneaker.dataVendita).toLocaleDateString() : 'N/D'}</td>
+                  <td>{sneaker.prezzoVendita ? `€ ${sneaker.prezzoVendita}` : 'N/D'}</td>
+                  
+                  <td className="text-center">
+                    <div className="d-flex justify-content-center">
+                      <button className="btn btn-success me-2" onClick={() => handleOpenEditModal(sneaker)}>
+                        <i className="bi bi-pencil-square"></i>
+                      </button>
+                      <button className="btn btn-danger" onClick={() =>handleOpenDeleteModal(sneaker)}>
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <ConfirmDeleteSneakerModal
+    isOpen={showDeleteModal}
+    onClose={handleCloseDeleteModal}
+    onConfirm={() => {
+        if (SneakerToDelete) {
+            removeSneaker(SneakerToDelete.id);
+            setSneakerToDelete(null);
+            handleCloseDeleteModal(); 
+        }
+    }}
+    sneaker={SneakerToDelete || {} as Sneaker} 
+/>
+
+          <SneakersModal
+            showModal={showAddModal || showEditModal}
+            onClose={showEditModal ? handleCloseEditModal : handleCloseAddModal}
+            onSave={showEditModal ? handleSaveEdit : handleSaveSneaker}
+            actionType={showEditModal ? 'edit' : 'add'}
+            sneakers={selectedSneaker}
+          />
         </div>
-
-  {/* Tabella */}
-  <table className="table table-hover table-responsive">
-    <thead className="table-dark">
-      <tr>
-        <th>Immagine</th>
-        <th>Modello</th>
-        <th>Data Acquisto</th>
-        <th>Prezzo Acquisto</th>
-        <th>Data Vendita</th>
-        <th>Prezzo Vendita</th>
-        <th className="text-center">Azioni</th>
-      </tr>
-    </thead>
-    <tbody>
-      {sneakers.map((sneaker) => (
-        <tr key={sneaker.id}>
-          <td>
-            <img
-              src={`http://localhost:3000/${sneaker.imageUrl}`}
-              alt={sneaker.modello}
-              className="img-fluid"
-              style={{ maxWidth: "65px", maxHeight: "50px" }}
-            />
-          </td>
-          <td>{sneaker.modello}</td>
-          <td>{new Date(sneaker.dataAcquisto).toLocaleDateString()}</td>
-          <td>{sneaker.prezzoAcquisto}</td>
-          <td>{sneaker.dataVendita ? new Date(sneaker.dataVendita).toLocaleDateString() : 'N/D'}</td>
-          <td>{sneaker.prezzoVendita ? sneaker.prezzoVendita : 'N/D'}</td>
-          
-          <td className="text-center">
-            <div className="d-flex justify-content-center">
-              <button className="btn btn-success me-2" onClick={() => handleOpenEditModal(sneaker)}>
-                <i className="bi bi-pencil-square"></i>
-              </button>
-              <button className="btn btn-danger" onClick={() => removeSneaker(sneaker.id!)}>
-                  <i className="bi bi-trash"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-  <SneakersModal
-        showModal={showAddModal || showEditModal}
-        onClose={showEditModal ? handleCloseEditModal : handleCloseAddModal}
-        onSave={showEditModal ? handleSaveEdit : handleSaveSneaker}
-        actionType={showEditModal ? 'edit' : 'add'}
-        sneakers={selectedSneaker}
-      />
-  </div>
-</div>
-    );
-}      
-
-export default Sneakers;
+      </div>
+    )};
+    
+    export default Sneakers;
+    
+    

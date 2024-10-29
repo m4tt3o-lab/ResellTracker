@@ -75,9 +75,9 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
   };
 
   return (
-    <form onSubmit={handleSneakerPatch} className="p-3" style={{ backgroundColor: "#f8f9fa", border: "1px solid #dee2e6", borderRadius: "5px" }}>
+    <form onSubmit={handleSneakerPatch}>
       <div className="mb-3">
-        <label htmlFor="modello" className="form-label" style={{ color: "#343a40" }}>Modello</label>
+      <label htmlFor="modello" className="form-label" style={{ color: 'white' }}><b>Modello</b></label>
         <input
           type="text"
           className="form-control"
@@ -85,11 +85,10 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
           value={modello}
           onChange={(e) => setModello(e.target.value)}
           required
-          style={{ borderColor: "#6c757d", backgroundColor: "#e9ecef" }}
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="dataAcquisto" className="form-label" style={{ color: "#343a40" }}>Data Acquisto</label>
+      <label htmlFor="dataAcquisto" className="form-label" style={{ color: 'white' }}><b>Data Acquisto</b></label>
         <input
           type="date"
           className="form-control"
@@ -97,11 +96,10 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
           value={dataAcquisto}
           onChange={(e) => setDataAcquisto(e.target.value)}
           required
-          style={{ borderColor: "#6c757d", backgroundColor: "#e9ecef" }}
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="prezzoAcquisto" className="form-label" style={{ color: "#343a40" }}>Prezzo Acquisto</label>
+      <label htmlFor="prezzoAcquisto" className="form-label" style={{ color: 'white' }}><b>Prezzo Acquisto</b></label>
         <input
           type="number"
           className="form-control"
@@ -109,36 +107,34 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
           value={prezzoAcquisto}
           onChange={(e) => setPrezzoAcquisto(Number(e.target.value))}
           required
-          style={{ borderColor: "#6c757d", backgroundColor: "#e9ecef" }}
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="dataVendita" className="form-label" style={{ color: "#343a40" }}>Data Vendita (opzionale)</label>
+      <label htmlFor="dataVendita" className="form-label" style={{ color: 'white' }}><b>Data Vendita</b></label>
         <input
           type="date"
           className="form-control"
           id="dataVendita"
           value={dataVendita}
           onChange={(e) => setDataVendita(e.target.value)}
-          style={{ borderColor: "#6c757d", backgroundColor: "#e9ecef" }}
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="prezzoVendita" className="form-label" style={{ color: "#343a40" }}>Prezzo Vendita (opzionale)</label>
+      <label htmlFor="prezzoVendita" className="form-label" style={{ color: 'white' }}><b>Prezzo Vendita</b></label>
         <input
           type="number"
           className="form-control"
           id="prezzoVendita"
           value={prezzoVendita || ''} 
           onChange={(e) => setPrezzoVendita(e.target.value ? Number(e.target.value) : undefined)}
-          style={{ borderColor: "#6c757d", backgroundColor: "#e9ecef" }}
+          placeholder='Prezzo vendita ...'
         />
       </div>
-      <div className="d-flex justify-content-end">
-        <button type="submit" className="btn btn-dark" style={{ marginRight: "10px" }}>
+      <div className="d-flex justify-content-start">
+       <button type="submit" className="btn" style={{color: 'white'}}>
           Modifica Sneaker
         </button>
-        <button type="button" className="btn btn-secondary" onClick={resetForm}>
+        <button type="submit" className="btn" style={{color: 'white'}} onClick={resetForm}>
           Reset
         </button>
       </div>

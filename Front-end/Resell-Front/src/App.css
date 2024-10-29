@@ -30,8 +30,7 @@ body {
 
 /* Effetto hover sulle righe */
 .table-row:hover {
-    background-color: rgba(122, 76, 125, 0.4); /* Sfondo al passaggio del mouse in una tonalità porpora più chiara */
-    border-left: none;
+    background-color: rgba(122, 76, 125, 0.4); 
 }
 
 /* Pulsanti */
@@ -75,7 +74,7 @@ tr {
 
 .caricaSneakers{
     background-color: #3cb371; /* Verde pastello */
-    border: none; /* Rimuovi il bordo */
+    border: none; 
     color: white;
 }
 

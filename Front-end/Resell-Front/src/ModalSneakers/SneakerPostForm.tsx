@@ -98,7 +98,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
     return (
         <form onSubmit={SneakerPost}>
             <div className="mb-3">
-                <label htmlFor="modello" className="form-label" style={{ color: 'black' }}>Modello</label>
+                <label htmlFor="modello" className="form-label" style={{ color: 'white' }}><b>Modello</b></label>
                 <input
                     type="text"
                     className="form-control"
@@ -131,7 +131,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
             </div>
     
             <div className="mb-3">
-                <label htmlFor="dataAcquisto" className="form-label" style={{ color: 'black' }}>Data Acquisto</label>
+                <label htmlFor="dataAcquisto" className="form-label" style={{ color: 'white' }}><b>Data Acquisto</b></label>
                 <input
                     type="date"
                     className="form-control"
@@ -142,7 +142,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                 />
             </div>
             <div className="mb-3">
-                <label htmlFor="prezzoAcquisto" className="form-label" style={{ color: 'black' }}>Prezzo Acquisto</label>
+                <label htmlFor="prezzoAcquisto" className="form-label" style={{ color: 'white' }}><b>Prezzo Acquisto</b></label>
                 <input
                     type="number"
                     className="form-control"
@@ -154,7 +154,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                 />
             </div>
             <div className="mb-3">
-                <label htmlFor="dataVendita" className="form-label" style={{ color: 'black' }}>Data Vendita</label>
+                <label htmlFor="dataVendita" className="form-label" style={{ color: 'white' }}><b>Data Vendita</b></label>
                 <input
                     type="date"
                     className="form-control"
@@ -164,7 +164,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                 />
             </div>
             <div className="mb-3">
-                <label htmlFor="prezzoVendita" className="form-label" style={{ color: 'black' }}>Prezzo Vendita</label>
+                <label htmlFor="prezzoVendita" className="form-label" style={{ color: 'white' }}><b>Prezzo Vendita</b></label>
                 <input
                     type="number"
                     className="form-control"
@@ -174,7 +174,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                     onChange={(e) => setPrezzoVendita(Number(e.target.value))}
                 />
             </div>
-            <button type="submit" className="btn btn-primary">Salva Sneaker</button>
+            <button type="submit" className="btn" style={{color: 'white'}}>Salva Sneaker</button>
         </form>
     );
 }
