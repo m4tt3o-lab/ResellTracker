@@ -131,10 +131,19 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
         />
       </div>
       <div className="d-flex justify-content-start">
-       <button type="submit" className="btn" style={{color: 'white'}}>
+       <button type="submit" className="btn" style={{                
+                color: 'white',
+                border: '2px solid white',
+                borderRadius: '50px',
+                padding: '10px 20px',}}>
           Modifica Sneaker
         </button>
-        <button type="submit" className="btn" style={{color: 'white'}} onClick={resetForm}>
+        <button type="submit" className="btn" style={{        
+                marginLeft:'5px',        
+                color: 'white',
+                border: '2px solid white',
+                borderRadius: '50px',
+                padding: '10px 20px',}} onClick={resetForm}>
           Reset
         </button>
       </div>

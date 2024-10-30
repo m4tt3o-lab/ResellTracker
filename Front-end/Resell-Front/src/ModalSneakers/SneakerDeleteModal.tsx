@@ -1,5 +1,5 @@
-
 import React from 'react';
+import '../Modal.css';
 
 interface SneakerData {
     id?: number;
@@ -42,17 +42,29 @@ const ConfirmDeleteSneakerModal: React.FC<ConfirmDeleteSneakerModalProps> = ({
       onClick={handleBackdropClick}
     >
       <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" style={{ color: 'black' }}>Conferma Cancellazione</h5>
+        <div className="modal-content" id='corpoModale'>
+          <div className="modal-header" style={{border:'none'}}>
+            <h5 className="modal-title" style={{ color: 'white' }}><i>Conferma Cancellazione</i></h5>
             <button type="button" className="btn-close" onClick={onClose} aria-label="Close"></button>
           </div>
-          <div className="modal-body">
-            <p style={{ color: 'black' }}>Sei sicuro di voler eliminare la sneaker <strong>{sneaker.modello}</strong>?</p>
+          <div className="modal-body" >
+            <p style={{ color: 'white' }}>Sei sicuro di voler eliminare la sneaker <strong>{sneaker.modello}</strong>?</p>
           </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>Annulla</button>
-            <button type="button" className="btn btn-danger" onClick={onConfirm}>Conferma</button>
+          <div className="modal-footer" style={{border:'none', alignItems:'start', justifyContent:'start'}}>
+            <button type="button" className="btn" onClick={onConfirm} style={{
+                        color: 'white',
+                        border: '2px solid white',
+                        borderRadius: '50px',
+                        padding: '10px 20px',
+            }}>Conferma</button>
+            <button type="button" className="btn" onClick={onClose} style={
+              {
+                color: 'white',
+                border: '2px solid white',
+                borderRadius: '50px',
+                padding: '10px 20px',
+              }
+            }>Annulla</button>
           </div>
         </div>
       </div>

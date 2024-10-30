@@ -232,9 +232,9 @@ function Sneakers() {
           </table>
 
           <ConfirmDeleteSneakerModal
-    isOpen={showDeleteModal}
-    onClose={handleCloseDeleteModal}
-    onConfirm={() => {
+        isOpen={showDeleteModal}
+        onClose={handleCloseDeleteModal}
+        onConfirm={() => {
         if (SneakerToDelete) {
             removeSneaker(SneakerToDelete.id);
             setSneakerToDelete(null);

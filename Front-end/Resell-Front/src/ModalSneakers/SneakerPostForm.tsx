@@ -112,22 +112,24 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                     required
                 />
                 {/* Mostra i suggerimenti */}
-                {filteredSuggestions.length > 0 && (
-                    <div className="dropdown" style={{ position: 'relative', zIndex: 1000 }}>
-                        <ul className="list-group ">
-                            {filteredSuggestions.map((suggestion, index) => (
-                                <li
-                                    key={index}
-                                    className="list-group-item"
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={() => handleSuggestionClick(suggestion)}
-                                >
-                                    {suggestion}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
+    {filteredSuggestions.length > 0 && (
+        <div className="dropdown w-100" style={{ position: 'relative', zIndex: 1000 }}>
+            <ul className="list-group rounded shadow mt-1">
+                {filteredSuggestions.map((suggestion, index) => (
+                    <li
+                        key={index}
+                        className="list-group-item list-group-item-action px-3 py-2"
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        style={{
+                            borderBottom: index !== filteredSuggestions.length - 1 ? '1px solid #ddd' : 'none',
+                        }}
+                    >
+                        {suggestion}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )}
             </div>
     
             <div className="mb-3">
@@ -174,7 +176,12 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                     onChange={(e) => setPrezzoVendita(Number(e.target.value))}
                 />
             </div>
-            <button type="submit" className="btn" style={{color: 'white'}}>Salva Sneaker</button>
+            <button type="submit" className="btn"     style={{
+                color: 'white',
+                border: '2px solid white',
+                borderRadius: '50px',
+                padding: '10px 20px',
+            }}>Salva Sneaker</button>
         </form>
     );
 }
