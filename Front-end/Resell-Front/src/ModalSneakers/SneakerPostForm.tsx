@@ -22,7 +22,6 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
-
     useEffect(() => {
         const fetchModels = async () => {
             try {
@@ -42,7 +41,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
         if (modello) {
             fetchModels();
         } else {
-            setSuggestions([]); 
+            setSuggestions([]);
             setFilteredSuggestions([]);
         }
     }, [modello]);
@@ -112,26 +111,26 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                     required
                 />
                 {/* Mostra i suggerimenti */}
-    {filteredSuggestions.length > 0 && (
-        <div className="dropdown w-100" style={{ position: 'relative', zIndex: 1000 }}>
-            <ul className="list-group rounded shadow mt-1">
-                {filteredSuggestions.map((suggestion, index) => (
-                    <li
-                        key={index}
-                        className="list-group-item list-group-item-action px-3 py-2"
-                        onClick={() => handleSuggestionClick(suggestion)}
-                        style={{
-                            borderBottom: index !== filteredSuggestions.length - 1 ? '1px solid #ddd' : 'none',
-                        }}
-                    >
-                        {suggestion}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    )}
+                {filteredSuggestions.length > 0 && (
+                    <div className="dropdown w-100" style={{ position: 'relative', zIndex: 1000 }}>
+                        <ul className="list-group rounded shadow mt-1">
+                            {filteredSuggestions.map((suggestion, index) => (
+                                <li
+                                    key={index}
+                                    className="list-group-item list-group-item-action px-3 py-2"
+                                    onClick={() => handleSuggestionClick(suggestion)}
+                                    style={{
+                                        borderBottom: index !== filteredSuggestions.length - 1 ? '1px solid #ddd' : 'none',
+                                    }}
+                                >
+                                    {suggestion}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
-    
+
             <div className="mb-3">
                 <label htmlFor="dataAcquisto" className="form-label" style={{ color: 'white' }}><b>Data Acquisto</b></label>
                 <input
@@ -176,7 +175,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                     onChange={(e) => setPrezzoVendita(Number(e.target.value))}
                 />
             </div>
-            <button type="submit" className="btn"     style={{
+            <button type="submit" className="btn" style={{
                 color: 'white',
                 border: '2px solid white',
                 borderRadius: '50px',

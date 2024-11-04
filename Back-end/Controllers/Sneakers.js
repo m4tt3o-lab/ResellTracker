@@ -1,6 +1,7 @@
 import Sneaker from "../Models/Sneakers.js";
 import fs from "fs";
 import path from "path";
+import { Op } from "sequelize";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -32,6 +33,24 @@ export const getSneakerById = async (req, res) => {
   }
 };
 
+//------------------------------------------------------------------
+
+export const getSneakersByModel = async (req, res) => {
+  try {
+    const { modello } = req.query;
+
+    const whereClause = {};
+
+    if (modello) {
+      whereClause.modello = { [Op.like]: `%${modello}%` }; 
+    }
+    const sneakers = await Sneaker.findAll({ where: whereClause });
+    res.json(sneakers);
+    
+  } catch (error) {
+    res.status(500).json({ message: 'Errore nel recupero delle sneakers' });
+  }
+}
 //------------------------------------------------------------------
 
 const findImage = (modelName) => {

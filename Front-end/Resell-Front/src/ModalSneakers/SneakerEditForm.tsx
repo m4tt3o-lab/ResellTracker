@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 
 interface SneakerData {
-  id?: number; 
+  id?: number;
   modello: string;
   dataAcquisto: Date;
   prezzoAcquisto: number;
-  dataVendita?: Date; 
-  prezzoVendita?: number; 
+  dataVendita?: Date;
+  prezzoVendita?: number;
 }
 
 interface SneakerEditFormProps {
-  sneakers: SneakerData ;
+  sneakers: SneakerData;
   onSave: (data: SneakerData) => void;
 }
 
@@ -20,13 +20,15 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
   const [prezzoAcquisto, setPrezzoAcquisto] = useState<number>(0);
   const [dataVendita, setDataVendita] = useState('');
   const [prezzoVendita, setPrezzoVendita] = useState<number | undefined>(undefined);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
   useEffect(() => {
     if (sneakers) {
       setModello(sneakers.modello);
-      setDataAcquisto(sneakers.dataAcquisto.toISOString().split('T')[0]); 
+      setDataAcquisto(sneakers.dataAcquisto.toISOString().split('T')[0]);
       setPrezzoAcquisto(sneakers.prezzoAcquisto);
-      setDataVendita(sneakers.dataVendita ? sneakers.dataVendita.toISOString().split('T')[0] : ''); 
+      setDataVendita(sneakers.dataVendita ? sneakers.dataVendita.toISOString().split('T')[0] : '');
       setPrezzoVendita(sneakers.prezzoVendita);
     }
   }, [sneakers]);
@@ -41,10 +43,10 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           modello,
-          dataAcquisto: new Date(dataAcquisto), 
+          dataAcquisto: new Date(dataAcquisto),
           prezzoAcquisto,
-          dataVendita: dataVendita ? new Date(dataVendita) : undefined, 
-          prezzoVendita: prezzoVendita || undefined 
+          dataVendita: dataVendita ? new Date(dataVendita) : undefined,
+          prezzoVendita: prezzoVendita || undefined
         }),
       });
 
@@ -52,7 +54,7 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
         onSave({
           ...sneakers,
           modello,
-          dataAcquisto: new Date(dataAcquisto), 
+          dataAcquisto: new Date(dataAcquisto),
           prezzoAcquisto,
           dataVendita: dataVendita ? new Date(dataVendita) : undefined,
           prezzoVendita: prezzoVendita || undefined,
@@ -71,24 +73,75 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
     setDataAcquisto('');
     setPrezzoAcquisto(0);
     setDataVendita('');
-    setPrezzoVendita(undefined); 
+    setPrezzoVendita(undefined);
+  };
+
+  useEffect(() => {
+    const fetchModels = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/images/search?query=${modello}`);
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setSuggestions(data);
+        } else {
+          setSuggestions([]);
+        }
+      } catch (error) {
+        console.error("Errore nella richiesta:", error);
+      }
+    };
+
+    if (modello) {
+      fetchModels();
+    } else {
+      setSuggestions([]);
+      setFilteredSuggestions([]);
+    }
+  }, [modello]);
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setModello(suggestion);
+    setFilteredSuggestions([]);
+    setFilteredSuggestions((prev) => prev.filter((item) => item !== suggestion));
   };
 
   return (
     <form onSubmit={handleSneakerPatch}>
       <div className="mb-3">
-      <label htmlFor="modello" className="form-label" style={{ color: 'white' }}><b>Modello</b></label>
+        <label htmlFor="modello" className="form-label" style={{ color: 'white' }}><b>Modello</b></label>
         <input
           type="text"
           className="form-control"
           id="modello"
           value={modello}
-          onChange={(e) => setModello(e.target.value)}
+          onChange={(e) => {
+            setModello(e.target.value);
+            setFilteredSuggestions(suggestions);
+          }}
           required
         />
+        {filteredSuggestions.length > 0 && (
+          <div className="dropdown w-100" style={{ position: 'relative', zIndex: 1000 }}>
+            <ul className="list-group rounded shadow mt-1">
+              {filteredSuggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  className="list-group-item list-group-item-action px-3 py-2"
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  style={{
+                    borderBottom: index !== filteredSuggestions.length - 1 ? '1px solid #ddd' : 'none',
+                  }}
+                >
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
       <div className="mb-3">
-      <label htmlFor="dataAcquisto" className="form-label" style={{ color: 'white' }}><b>Data Acquisto</b></label>
+        <label htmlFor="dataAcquisto" className="form-label" style={{ color: 'white' }}><b>Data Acquisto</b></label>
         <input
           type="date"
           className="form-control"
@@ -99,7 +152,7 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
         />
       </div>
       <div className="mb-3">
-      <label htmlFor="prezzoAcquisto" className="form-label" style={{ color: 'white' }}><b>Prezzo Acquisto</b></label>
+        <label htmlFor="prezzoAcquisto" className="form-label" style={{ color: 'white' }}><b>Prezzo Acquisto</b></label>
         <input
           type="number"
           className="form-control"
@@ -110,7 +163,7 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
         />
       </div>
       <div className="mb-3">
-      <label htmlFor="dataVendita" className="form-label" style={{ color: 'white' }}><b>Data Vendita</b></label>
+        <label htmlFor="dataVendita" className="form-label" style={{ color: 'white' }}><b>Data Vendita</b></label>
         <input
           type="date"
           className="form-control"
@@ -120,30 +173,32 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
         />
       </div>
       <div className="mb-3">
-      <label htmlFor="prezzoVendita" className="form-label" style={{ color: 'white' }}><b>Prezzo Vendita</b></label>
+        <label htmlFor="prezzoVendita" className="form-label" style={{ color: 'white' }}><b>Prezzo Vendita</b></label>
         <input
           type="number"
           className="form-control"
           id="prezzoVendita"
-          value={prezzoVendita || ''} 
+          value={prezzoVendita || ''}
           onChange={(e) => setPrezzoVendita(e.target.value ? Number(e.target.value) : undefined)}
           placeholder='Prezzo vendita ...'
         />
       </div>
       <div className="d-flex justify-content-start">
-       <button type="submit" className="btn" style={{                
-                color: 'white',
-                border: '2px solid white',
-                borderRadius: '50px',
-                padding: '10px 20px',}}>
+        <button type="submit" className="btn" style={{
+          color: 'white',
+          border: '2px solid white',
+          borderRadius: '50px',
+          padding: '10px 20px',
+        }}>
           Modifica Sneaker
         </button>
-        <button type="submit" className="btn" style={{        
-                marginLeft:'5px',        
-                color: 'white',
-                border: '2px solid white',
-                borderRadius: '50px',
-                padding: '10px 20px',}} onClick={resetForm}>
+        <button type="button" className="btn" style={{
+          marginLeft: '5px',
+          color: 'white',
+          border: '2px solid white',
+          borderRadius: '50px',
+          padding: '10px 20px',
+        }} onClick={resetForm}>
           Reset
         </button>
       </div>

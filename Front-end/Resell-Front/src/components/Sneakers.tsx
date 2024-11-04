@@ -21,6 +21,7 @@ function Sneakers() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [searchModello, setSearchModello] = useState<string>("");
     const [SneakerToDelete, setSneakerToDelete] = useState<Sneaker | null>(null);
     const [selectedSneaker, setSelectedSneaker] = useState<Sneaker | null>(null);
 
@@ -43,6 +44,30 @@ function Sneakers() {
             console.error('Errore durante il recupero delle sneakers:', error);
         }
     };
+    
+    const filterSneakers = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/sneakers?modello=${searchModello}`);
+        const data = await response.json();
+        setSneakers(data);
+      } catch (error) {
+        console.error('Errore durante la ricerca delle sneakers:', error);
+      }
+    };
+  
+    // debounce per la ricerca
+    useEffect(() => {
+      const delayDebounce = setTimeout(() => {
+        if (searchModello) {
+          filterSneakers(); 
+        } else {
+          getSneakers();
+        }
+      }, 300); 
+  
+      return () => clearTimeout(delayDebounce);
+    }, [searchModello]);
+
 
     const earned = (sneakers: Sneaker[]): number => {
       return sneakers
@@ -145,7 +170,7 @@ function Sneakers() {
                       type="text"
                       className="form-control"
                       placeholder="Cerca per parola chiave..."
-                      onChange={(e) => console.log(e.target.value)}
+                      onChange={(e) => setSearchModello(e.target.value)}
                     />
                   </div>
                 </div>
@@ -156,7 +181,7 @@ function Sneakers() {
                 <div className="me-4" style={{ fontSize: '23px' }}>
                   <b>Totale guadagnato:</b>
                   <span
-                    className={`badge ${earned(sneakers) > 0 ? 'bg-success' : 'bg-danger'}`}
+                    className={`badge ${earned(sneakers) >= 0 ? 'bg-success' : 'bg-danger'}`}
                     style={{ marginLeft: '5px', padding: '10px' }}
                   >
                     {`€ ${earned(sneakers)}`}
@@ -257,4 +282,8 @@ function Sneakers() {
     
     export default Sneakers;
     
+
+function filterSneakers() {
+  throw new Error("Function not implemented.");
+}
     
