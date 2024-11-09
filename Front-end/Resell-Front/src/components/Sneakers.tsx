@@ -156,7 +156,7 @@ function Sneakers() {
               
               {/* Bottoni di azione */}
               <div style={{ marginLeft: '130px' }}>
-                <button className="btn caricaSneakers" onClick={handleOpenAddModal}>
+                <button className="btn caricaSneakers" title="Aggiungi" onClick={handleOpenAddModal}>
                   Carica Sneaker <i className="bi bi-plus-circle"></i>
                 </button>
     
@@ -243,10 +243,10 @@ function Sneakers() {
                   
                   <td className="text-center">
                     <div className="d-flex justify-content-center">
-                      <button className="btn btn-success me-2" onClick={() => handleOpenEditModal(sneaker)}>
+                      <button className="btn btn-success me-2" title="Modifica" onClick={() => handleOpenEditModal(sneaker)}>
                         <i className="bi bi-pencil-square"></i>
                       </button>
-                      <button className="btn btn-danger" onClick={() =>handleOpenDeleteModal(sneaker)}>
+                      <button className="btn btn-danger" title="Cancella" onClick={() =>handleOpenDeleteModal(sneaker)}>
                         <i className="bi bi-trash"></i>
                       </button>
                     </div>
@@ -255,7 +255,6 @@ function Sneakers() {
               ))}
             </tbody>
           </table>
-
           <ConfirmDeleteSneakerModal
         isOpen={showDeleteModal}
         onClose={handleCloseDeleteModal}
@@ -283,7 +282,4 @@ function Sneakers() {
     export default Sneakers;
     
 
-function filterSneakers() {
-  throw new Error("Function not implemented.");
-}
     

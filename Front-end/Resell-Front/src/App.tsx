@@ -1,11 +1,19 @@
-import Sneakers from './components/Sneakers'
+import Sneakers from './components/Sneakers.tsx';
+import DiscordBot from './components/Discord.tsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 function App() {
-
   return (
-    <Sneakers/>
-  )
+    <Router>
+      <Routes>
+        <Route path='/Inventario' element={<Sneakers />} />
+        <Route path='/Discord' element={<DiscordBot />} />  
+        <Route path='/' element={<Navigate to="/Inventario" />} />
+      </Routes>
+    </Router>
+  );
 }
-export default App
+
+export default App;

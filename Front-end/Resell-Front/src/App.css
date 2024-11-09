@@ -83,3 +83,14 @@ tr {
 }
 
 
+.link-hover {
+    color: inherit; /* Mantiene il colore di default */
+    
+}
+
+.link-hover:hover {
+    color: #FFD700; /* Cambia il colore al passaggio del mouse, esempio: oro */
+    text-decoration: underline; /* Aggiunge una sottolineatura */
+    font-weight: bold; /* Aggiunge grassetto per evidenziare */
+  }
+  

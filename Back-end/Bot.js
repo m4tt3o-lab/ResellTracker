@@ -1,8 +1,10 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import Link from './Models/Links.js';
 import dotenv from 'dotenv';
+import express from "express";
 
 dotenv.config();
+const app = express();  
 
 const client = new Client({
   intents: [
@@ -14,6 +16,20 @@ const client = new Client({
 
 client.once('ready', () => {
   console.log(`Bot connesso come ${client.user.tag}`);
+});
+
+app.get('/bot-status', (req, res) => {
+  try {
+    // Verifica se il bot è pronto
+    const botStatus = client.isReady(); 
+
+    // Restituisce direttamente lo stato del bot come oggetto
+    res.json({ botStatus });  
+  } catch (error) {
+    console.error("Errore nel recuperare lo stato del bot:", error);
+    // Restituisce botStatus: false in caso di errore
+    res.json({ botStatus: false });
+  }
 });
 
 client.on('messageCreate', async (message) => {
@@ -53,3 +69,9 @@ client.on('messageCreate', async (message) => {
   }
 });
 client.login(process.env.TOKEN);
+
+app.listen(process.env.BOT_PORT, () => {
+  console.log(`Bot API server is running on port ${process.env.BOT_PORT}`);
+});
+
+export default client
