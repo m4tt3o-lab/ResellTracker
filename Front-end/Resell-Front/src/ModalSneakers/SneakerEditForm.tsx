@@ -5,8 +5,8 @@ interface SneakerData {
   modello: string;
   dataAcquisto: Date;
   prezzoAcquisto: number;
-  dataVendita?: Date;
-  prezzoVendita?: number;
+  dataVendita?: Date | null;
+  prezzoVendita?: number | null;
 }
 
 interface SneakerEditFormProps {
@@ -45,8 +45,8 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
           modello,
           dataAcquisto: new Date(dataAcquisto),
           prezzoAcquisto,
-          dataVendita: dataVendita ? new Date(dataVendita) : undefined,
-          prezzoVendita: prezzoVendita || undefined
+          dataVendita: dataVendita ? new Date(dataVendita) : null,
+          prezzoVendita: prezzoVendita || null
         }),
       });
 
@@ -56,8 +56,8 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
           modello,
           dataAcquisto: new Date(dataAcquisto),
           prezzoAcquisto,
-          dataVendita: dataVendita ? new Date(dataVendita) : undefined,
-          prezzoVendita: prezzoVendita || undefined,
+          dataVendita: dataVendita ? new Date(dataVendita) : null,
+          prezzoVendita: prezzoVendita || null,
         });
         resetForm();
       } else {

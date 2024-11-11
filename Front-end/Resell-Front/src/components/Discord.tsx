@@ -73,8 +73,8 @@ function DiscordBot() {
               </div>
               <div style={{ marginLeft: '130px' }} className="mt-5 d-flex">
                 <div className="me-4" style={{ fontSize: '23px' }}>
-                  <span><b>Status BatMan</b></span>
-                  <span className="ms-2" >{isBotOnline? <i className="bi bi-emoji-smile"></i>: <i className="bi bi-emoji-expressionless"></i>}</span>
+                  <span style={{fontSize:'30px'}}><b>Status BatMan</b></span>
+                  <span className="ms-2" >{isBotOnline? <i className="bi bi-toggle-on" style={{fontSize:'30px'}}></i>: <i className="bi bi-toggle-off" style={{fontSize:'30px'}}></i>}</span>
                 </div>
               </div>
                   
