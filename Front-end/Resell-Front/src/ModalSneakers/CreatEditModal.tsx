@@ -8,8 +8,8 @@ interface SneakerData {
   modello: string;
   dataAcquisto: Date; 
   prezzoAcquisto: number;
-  dataVendita?: Date; 
-  prezzoVendita?: number; 
+  dataVendita?: Date | null; 
+  prezzoVendita?: number | null; 
 }
 
 interface SneakersModalProps {

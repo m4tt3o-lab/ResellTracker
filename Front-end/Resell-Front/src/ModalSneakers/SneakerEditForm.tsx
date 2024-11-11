@@ -19,7 +19,7 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
   const [dataAcquisto, setDataAcquisto] = useState('');
   const [prezzoAcquisto, setPrezzoAcquisto] = useState<number>(0);
   const [dataVendita, setDataVendita] = useState('');
-  const [prezzoVendita, setPrezzoVendita] = useState<number | undefined>(undefined);
+  const [prezzoVendita, setPrezzoVendita] = useState<number | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
@@ -29,7 +29,7 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
       setDataAcquisto(sneakers.dataAcquisto.toISOString().split('T')[0]);
       setPrezzoAcquisto(sneakers.prezzoAcquisto);
       setDataVendita(sneakers.dataVendita ? sneakers.dataVendita.toISOString().split('T')[0] : '');
-      setPrezzoVendita(sneakers.prezzoVendita);
+      setPrezzoVendita(sneakers.prezzoVendita|| null);
     }
   }, [sneakers]);
 
@@ -73,7 +73,7 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
     setDataAcquisto('');
     setPrezzoAcquisto(0);
     setDataVendita('');
-    setPrezzoVendita(undefined);
+    setPrezzoVendita(null);
   };
 
   useEffect(() => {
@@ -179,7 +179,7 @@ function SneakerEditForm({ sneakers, onSave }: SneakerEditFormProps) {
           className="form-control"
           id="prezzoVendita"
           value={prezzoVendita || ''}
-          onChange={(e) => setPrezzoVendita(e.target.value ? Number(e.target.value) : undefined)}
+          onChange={(e) => setPrezzoVendita(e.target.value ? Number(e.target.value) : null)}
           placeholder='Prezzo vendita ...'
         />
       </div>

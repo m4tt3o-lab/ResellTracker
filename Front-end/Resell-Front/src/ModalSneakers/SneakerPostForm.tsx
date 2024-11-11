@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import '../App.css';
+
 interface SneakerData {
     id?: number;
     modello: string;
     dataAcquisto: Date;
     prezzoAcquisto: number;
-    dataVendita?: Date;
-    prezzoVendita?: number;
+    dataVendita?: Date | null;
+    prezzoVendita?: number | null;
 }
 
 interface SneakerPostFormProps {
@@ -16,9 +17,9 @@ interface SneakerPostFormProps {
 function SneakerPostForm({ onSave }: SneakerPostFormProps) {
     const [modello, setModello] = useState('');
     const [dataAcquisto, setDataAcquisto] = useState('');
-    const [prezzoAcquisto, setPrezzoAcquisto] = useState<number | undefined>(undefined);
+    const [prezzoAcquisto, setPrezzoAcquisto] = useState<number | null>(null);
     const [dataVendita, setDataVendita] = useState('');
-    const [prezzoVendita, setPrezzoVendita] = useState<number | undefined>(undefined);
+    const [prezzoVendita, setPrezzoVendita] = useState<number | null>(null);
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
 
@@ -49,7 +50,6 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
     const handleSuggestionClick = (suggestion: string) => {
         setModello(suggestion);
         setFilteredSuggestions([]);
-        setFilteredSuggestions((prev) => prev.filter((item) => item !== suggestion));
     };
 
     const SneakerPost = async (e: React.FormEvent) => {
@@ -60,8 +60,8 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
             modello,
             dataAcquisto: new Date(dataAcquisto),
             prezzoAcquisto: prezzoAcquisto!,
-            ...(dataVendita && { dataVendita: new Date(dataVendita) }),
-            ...(prezzoVendita && { prezzoVendita })
+            dataVendita: dataVendita ? new Date(dataVendita) : null,
+            prezzoVendita: prezzoVendita ?? null,
         };
 
         try {
@@ -72,8 +72,8 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                     modello: sneakerData.modello,
                     dataAcquisto: sneakerData.dataAcquisto.toISOString(),
                     prezzoAcquisto: sneakerData.prezzoAcquisto,
-                    ...(sneakerData.dataVendita && { dataVendita: sneakerData.dataVendita.toISOString() }),
-                    ...(sneakerData.prezzoVendita && { prezzoVendita: sneakerData.prezzoVendita }),
+                    dataVendita: sneakerData.dataVendita ? sneakerData.dataVendita.toISOString() : null,
+                    prezzoVendita: sneakerData.prezzoVendita ?? null,
                 }),
             });
 
@@ -82,9 +82,9 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                 onSave(result);
                 setModello('');
                 setDataAcquisto('');
-                setPrezzoAcquisto(undefined);
+                setPrezzoAcquisto(null);
                 setDataVendita('');
-                setPrezzoVendita(undefined);
+                setPrezzoVendita(null);
                 setFilteredSuggestions([]);
             } else {
                 alert("Aggiunta fallita.");
@@ -106,7 +106,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                     value={modello}
                     onChange={(e) => {
                         setModello(e.target.value);
-                        setFilteredSuggestions(suggestions);
+                        setFilteredSuggestions(suggestions.filter(suggestion => suggestion.toLowerCase().includes(e.target.value.toLowerCase())));
                     }}
                     required
                 />
@@ -172,7 +172,7 @@ function SneakerPostForm({ onSave }: SneakerPostFormProps) {
                     placeholder='Inserisci prezzo vendita...'
                     id="prezzoVendita"
                     value={prezzoVendita || ''}
-                    onChange={(e) => setPrezzoVendita(Number(e.target.value))}
+                    onChange={(e) => setPrezzoVendita(Number(e.target.value || ''))}
                 />
             </div>
             <button type="submit" className="btn" style={{
