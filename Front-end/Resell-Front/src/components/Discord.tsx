@@ -16,10 +16,7 @@ function DiscordBot() {
     const [links, setLinks] = useState<Link[]>([])
     const [isBotOnline, setIsBotOnline] = useState(false);
 
-
-
-
-        const fetchBotStatus = async () => {
+    const fetchBotStatus = async () => {
           try {
             const url = 'http://localhost:3000/links/bot-status';
             const response = await fetch(url);
@@ -43,19 +40,42 @@ function DiscordBot() {
     };
 
     useEffect(() => {
-      fetchBotStatus();
-      const intervalId = setInterval(fetchBotStatus, 30000);
-      return () => clearInterval(intervalId);
-  }, []);
-
-  // Recupera i link solo se il bot è online
-  useEffect(() => {
-      if (isBotOnline) {
-          getLinks();
-      }else{
-        setLinks([])
-      }
+      const fetchLinks = async () => {
+          await fetchBotStatus();
+          if (isBotOnline) {
+              await getLinks();
+          } else {
+              setLinks([]);
+          }
+      };
+  
+      fetchLinks(); 
+      const intervalId = setInterval(fetchLinks, 15000);
+  
+      return () => clearInterval(intervalId); // Pulisci l'intervallo al termine dell'effetto
   }, [isBotOnline]);
+
+  
+  const ClearPage = async () => {
+    const url = `http://localhost:3000/links/delete-all-links`;
+  
+      try {
+        const response = await fetch(url, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json', 
+          },
+        });
+  
+        if (response.ok) {
+          getLinks()
+          console.log('Tutti i link sono stati cancellati con successo.');
+        } 
+      } catch (error) {
+        console.error('Errore durante la richiesta di cancellazione del utente:', error);
+      }
+    };
+
 
 
     return (
@@ -75,6 +95,18 @@ function DiscordBot() {
                 <div className="me-4" style={{ fontSize: '23px' }}>
                   <span style={{fontSize:'30px'}}><b>Status BatMan</b></span>
                   <span className="ms-2" >{isBotOnline? <i className="bi bi-toggle-on" style={{fontSize:'30px'}}></i>: <i className="bi bi-toggle-off" style={{fontSize:'30px'}}></i>}</span>
+                </div>
+                
+                <div style={{ fontSize: '23px',marginLeft: '130px' }}>
+                  <button className="btn" 
+                  style={{
+                      color: 'white',
+                      border: '2px solid white',
+                      borderRadius: '50px',
+                      padding: '10px 20px',
+                    }}
+                    onClick={ClearPage}>Pulisci pagina
+                  </button>
                 </div>
               </div>
                   

@@ -34,16 +34,27 @@ function Sneakers() {
             const url = 'http://localhost:3000/sneakers';
             const response = await fetch(url);
             const data = await response.json();
+            
+            // Aggiungiamo le date come oggetti Date
             const sneakersWithDates = data.map((sneaker: Sneaker) => ({ 
                 ...sneaker,
-                dataAcquisto:  new Date(sneaker.dataAcquisto), 
-                dataVendita: sneaker.dataVendita? new Date(sneaker.dataVendita): null
+                dataAcquisto: new Date(sneaker.dataAcquisto), 
+                dataVendita: sneaker.dataVendita ? new Date(sneaker.dataVendita) : null
             }));
+            
+            // Ordinamento sneakers in base alla presenza o meno di data vendute
+            sneakersWithDates.sort((a:any, b:any) => {
+                if (a.dataVendita === null && b.dataVendita !== null) return -1; 
+                if (a.dataVendita !== null && b.dataVendita === null) return 1; 
+                return 0; 
+            });
+    
             setSneakers(sneakersWithDates);
         } catch (error) {
             console.error('Errore durante il recupero delle sneakers:', error);
         }
     };
+    
     
     const filterSneakers = async () => {
       try {

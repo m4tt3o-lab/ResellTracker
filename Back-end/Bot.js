@@ -5,7 +5,6 @@ import express from "express";
 
 dotenv.config();
 const app = express();  
-
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -13,6 +12,9 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ]
 });
+
+
+
 
 client.once('ready', () => {
   console.log(`Bot connesso come ${client.user.tag}`);
@@ -22,12 +24,10 @@ app.get('/bot-status', (req, res) => {
   try {
     // Verifica se il bot è pronto
     const botStatus = client.isReady(); 
-
     // Restituisce direttamente lo stato del bot come oggetto
     res.json({ botStatus });  
   } catch (error) {
     console.error("Errore nel recuperare lo stato del bot:", error);
-    // Restituisce botStatus: false in caso di errore
     res.json({ botStatus: false });
   }
 });
@@ -36,8 +36,8 @@ client.on('messageCreate', async (message) => {
   if (message.embeds.length > 0) {
     console.log("Embed trovato!");
     for (const embed of message.embeds) {
-      const title = embed.title || 'Nessun titolo';
-      const description = embed.description || 'Nessuna descrizione';
+      const title = embed.title || null;
+      const description = embed.description || null;
       const fields = embed.fields || [];
       console.log(`Titolo: ${title}`);
       console.log(`Descrizione: ${description}`);
